@@ -1,13 +1,12 @@
 #!/bin/bash
-## Coptyright 2016 The HongJiang Library Project Authors. All rights reserved.
+## Coptyright 2016 The HongJiang Library Authors. All rights reserved.
 ## Use of this source code is governed by a Apache-style
 ## license that can be found in the LICNESE file.
 ##
 ## Git(Github.com) Common Client Commands.
 ##
-## @authors hjboss <hongjiangproject@gmail.com> 2016-03 $$
+## @authors hjboss <hongjiangproject@gmail.com> 2018-04 $$
 ## @version 1.0.0
-##
 GIT=`/usr/bin/which git`
 HOST='git@github.com'
 NAME='hlibs'
