@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+## Coptyright 2016 The HongJiang Library Authors. All rights reserved.
+## Use of this source code is governed by a Apache-style
+## license that can be found in the LICNESE file.
+##
+## Admin Client Commands for the Mongo Server.
+##
+## @authors hjboss <hongjiangproject@gmail.com> 2018-04 $$
+## @version 1.0.0
+data = {
+        :MONGO_HOST => '127.0.0.1',
+        :MONGO_PORT => 17280,
+        :MONGO_NAME => 'admin'
+}
+if $*.length < 4 then
+        puts "#{$0} [admin|write|read] <dataname> <username> <password>"
+        exit(0)
+end
+conf = File.join(ENV['etcSbin'], 'mongo.conf')
+IO.foreach(conf) {|item| buf = item.split('='); data[buf[0].to_sym] = buf[1].strip()} if File.exists?(conf)
+case $*[0]
+when 'admin' then
+        data[:eval] = "db.createUser({user:'#{$*[2]}',pwd:'#{$*[3]}',roles:[{role:'root',db:'admin'}]})"
+when 'write' then
+        data[:MONGO_NAME] = $*[1]
+        data[:eval] = "db.createUser({user:'#{$*[2]}',pwd:'#{$*[3]}',roles:[{role:'readWrite',db:'#{$*[1]}'}]})"
+        data[:auth] = "-u #{data[:MONGO_USER]} -p #{data[:MONGO_PASS]}"
+when 'read' then
+else
+        puts "#{$0} [admin|write|read] <dataname> <username> <password>"
+end
+system "mongo #{data[:auth]} #{data[:MONGO_HOST]}:#{data[:MONGO_PORT]}/#{data[:MONGO_NAME]} --eval \"#{data[:eval]}\""

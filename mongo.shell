@@ -1,0 +1,28 @@
+#!/bin/bash
+## Coptyright 2016 The HongJiang Library Authors. All rights reserved.
+## Use of this source code is governed by a Apache-style
+## license that can be found in the LICNESE file.
+##
+## Common Client Commands for the Mongo Server.
+##
+## @authors hjboss <hongjiangproject@gmail.com> 2018-04 $$
+## @version 1.0.0
+MONGO_HOST=127.0.0.1
+MONGO_PORT=17280
+if [ -f $etcSbin/mongo.conf ]; then
+        . $etcSbin/mongo.conf
+fi
+case $# in
+3)
+        mongo $MONGO_HOST:$MONGO_PORT/$1 --username=$2 --password=$3
+;;
+1)
+        mongo $MONGO_HOST:$MONGO_PORT/$1
+;;
+0)
+        mongo $MONGO_HOST:$MONGO_PORT
+;;
+*)
+        echo "$0 [dataname [<username> <password>]]"
+;;
+esac

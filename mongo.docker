@@ -7,11 +7,15 @@
 ##
 ## @authors hjboss <hongjiangproject@gmail.com> 2018-04 $$
 ## @version 1.0.0
-MONGO_HOST=127.0.0.1
+MONGO_HOST='127.0.0.1'
 MONGO_PORT=17280
-MONGO_DATA=/mnt/www/STORAGE/
-MONGO_NAME=workstation-mongo
+MONGO_DATA='/mnt/www/STORAGE/mongo'
+MONGO_SIGN='workstation-mongo'
+MONGO_AUTH='--auth'
 if [ -f $etcSbin/mongo.conf ]; then
         . $etcSbin/mongo.conf
 fi
-docker run --restart=always --name $MONGO_NAME -p $MONGO_HOST:$MONGO_PORT:27017 -v $MONGO_DATA/mongo:/data/db -d hub.c.163.com/library/mongo:latest --storageEngine wiredTiger
+if [ ! -d $MONGO_DATA ]; then
+        MONGO_AUTH=''
+fi
+docker run --restart=always --name $MONGO_SIGN -p $MONGO_HOST:$MONGO_PORT:27017 -v $MONGO_DATA:/data/db -d hub.c.163.com/library/mongo:latest --storageEngine wiredTiger $MONGO_AUTH
